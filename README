@@ -1,64 +1,58 @@
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=4686
 
 Crunch
-A Easier way to perform calculations inside Vim
+======
+
+An easier way to perform calculations inside Vim
 
 GitHub
-======
+------
 The most up to date version of this plugin can be found here:
 https://github.com/arecarn/crunch
 
-OVERVIEW:
-=========
-Crunch makes calculations in Vim more accessible and loosens Vim's math syntax. Most of Crunch's syntax loosening is accomplished by extensive search and replace. Crunch also forces floating point to be used.
-
-Crunch allows you to just type in mathematical expressions without having to worry about the syntax as much, and getting the answer you expect. Crunch works from the command line for quick off hand calculations. The result of these calculations are then available to be pasted. Variables can be used to save expressions so they can be used later. Multiple lines can be evaluated/reevaluated , with visual selections. Optionally single lines can be evaluated/reevaluated.
-
-USAGE:
-======
-:Crunch Crunch then gives you the following prompt in the command line: Calc >> for you to enter you mathematical expression. The result is then available to be pasted from the default register.
-
-:CrunchLine, :'<'>CrunchLine, or cl Crunch Uses the current line or the visually selected lines as the expression(s) and adds the result to the end of the line(s).
-
-VARIABLES:
-----------
-When using :CrunchLine or the mapping cl you can use variables of a sort to define values and store results.
-
-Declaring a variable like this: #cat 5
-
-Use a variable in an expression like this: cat# +10
-
-Variable names contain the ranges [a-z, A-Z, 0-9]. By default the marker for a variable is '#' but it can be redefined by changing the g:crunch_tag_marker global variable.
-
-EXAMPLE:
-========
-Calculate area and circumference of a sphere given the radius. Type the below and use the CrunchLine command or mapping cl:
-
-radius# = 5
-pi# = 3.1415
-area# pow(#radius,2)*#pi
-circumference# 2 * #pi * #radius 
-First two lines work like constants denoting Pi and the radius. You can then visually select the next two lines and use either :CrunchLine, or cl to evaluate the expressions and see the results.
-
-area# pow(#radius,2)*#pi = 78.5375
-circumference# 2 * #pi * #radius = 31.415
-If invalid expressions are used Vim will report it's errors, and may give a result of zero.
-
-COMMENTS:
----------
-If you don't want a line evaluated but want to leave some text there crunch has support for ignoring lines with comments. By default the string to start a comment it '"' just like Vim, but this can be configured g:crunch_calc_comment global variable.
-
-Note: The comment must be the first character in a line for the comment to work.
 
 
+Overview
+--------
 
+Crunch makes calculations in Vim more accessible and loosens Vim's math syntax. Most of Crunch's looser syntax is accomplished by extensive search and replace. Crunch also forces floating point to be used.
 
-MAKE CRUNCH BETTER
-==================
+Requirements: Vim compiled with +float feature.
+
+Crunch allows you to just type in mathematical expressions without having to worry about the syntax as much.
+
+Usage
+-----
+
+:Crunch <args>
+
+Where is some mathematical expression to be evaluated. The result is then available to be pasted from the default register.
+
+:Crunch
+
+Crunch then gives you the following prompt in the command line: Calc >> for you to enter you mathematical expression. The result is then available to be pasted from the default register.
+
+:CrunchLine, :'<'>CrunchLine, or <leader>cl
+
+Crunch Uses the current line or the visually selected lines as the expression(s) and adds the result to the end of the line(s). When the expression(s) changes using :CrunchLine again will reevaluate the line(s)
+
+:CrunchBlock, or <leader>cb
+
+Crunch Uses the current paragraph (block of text starting and ending with an empty line) as the expressions and adds the result to the end of the lines. When a expressions in a paragraph changes using :CrunchBlock again will reevaluate them
+
+Demos
+-----
+
+See the Github page for Animated Gif Demos
+https://github.com/arecarn/crunch
+
+Make Crunch Better
+
 I'm pretty new to Vim Script so any tips are appreciated. Think you can make Crunch better? Fork it on GitHub and send a pull request. If you find bugs, want new functionality contact me by making an issue on GitHub and I'll see what I can do.
 
-CREDITS
-=======
+Credits
+-------
+
 Sources inspiration and credits for this plugin
 
 http://patorjk.com/ ASCII font courtesy of Patrick Gillespie

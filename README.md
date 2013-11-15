@@ -1,126 +1,113 @@
 #Crunch
 
-### A Easier way to perform calculations inside Vim
+###An easier way to perform calculations inside Vim
 
 ##Overview
+
 Crunch makes calculations in Vim more accessible and loosens Vim's math syntax.
-Most of Crunch's syntax loosening is accomplished by extensive search and
-replace. Crunch also forces floating point to be used. 
+Most of Crunch's looser syntax is accomplished by extensive search and replace.
+Crunch also forces floating point to be used. 
+
+Requirements: Vim compiled with `+float` feature.
 
 Crunch allows you to just type in mathematical expressions without having to
-worry about the syntax as much, and getting the answer you expect. 
+worry about the syntax as much.
 
-##Demo
-
-![Command Line Mode](http://i.imgur.com/uJbfln9.gif) 
-
-Crunch works from the command line for quick off hand calculations. The result
-of these calculations are then available to be pasted.
-
-
-![Variables](http://i.imgur.com/LHzT4HY.gif)
-
-Variables can be used to save expressions so they can be used later.
-
-![Visual Selection](http://i.imgur.com/3KTujLF.gif) 
-
-Multiple lines can be evaluated/reevaluated , with visual selections.
-Optionally single lines can be evaluated/reevaluated.
 
 ##Usage
-1. :Crunch
+*   `:Crunch <args>`
+
+    Where <args> is some mathematical expression to be evaluated. The result
+    is then available to be pasted from the default register.
+
+*  `:Crunch`
+
     Crunch then gives you the following prompt in the command line:
     Calc >>
     for you to enter you mathematical expression. The result is then available
     to be pasted from the default register.
 
-2. :CrunchLine, :'<'>CrunchLine, or <leader>cl
+*  `:CrunchLine`, `:'<'>CrunchLine`, or `<leader>cl`
+
     Crunch Uses the current line or the visually selected lines as the
-    expression(s) and adds the result to the end of the line(s).
+    expression(s) and adds the result to the end of the line(s). When the
+    expression(s) changes using :CrunchLine again will reevaluate the line(s)
 
-###Variables
+*  `:CrunchBlock`, or `<leader>cb`
 
-When using :CrunchLine or the mapping <leader>cl you can use variables of a
-sort to define values and store results. 
+    Crunch Uses the current paragraph (block of text starting and ending with
+    an empty line) as the expressions and adds the result to the end of the
+    lines. When a expressions in a paragraph changes using :CrunchBlock again
+    will reevaluate them
 
-* Declaring a variable like this: 
-  `#cat 5` 
+##Demos
 
-* Use a variable in an expression like this:
-  `cat# +10`
+![Command Line Mode](http://i.imgur.com/Fu0j3OE.gif) 
 
-* Variable names contain the ranges [a-z, A-Z, 0-9]. By default the marker for
-  a variable is '#' but it can be redefined by changing the g:crunch_tag_marker
-  global variable. 
+Crunch works from the command line for quick off hand calculations. The result
+of these calculations are then available to be pasted.
 
-###Example 
-
-Calculate area and circumference of a sphere given the radius. Type the below
-and use the CrunchLine command or mapping <leader>cl:
-
-    radius# = 5
-    pi# = 3.1415
-    area# pow(#radius,2)*#pi
-    circumference# 2 * #pi * #radius 
-
-First two lines work like constants denoting Pi and the radius. You can then
-visually select the next two lines and use either :CrunchLine, or <leader>cl
-to evaluate the expressions and see the results.
-
-    area# pow(#radius,2)*#pi = 78.5375
-    circumference# 2 * #pi * #radius = 31.415
-
-If invalid expressions are used Vim will report it's errors, and may give a
-result of zero.
+---
 
 
-###Comments
-If you don't want a line evaluated but want to leave some text there crunch
-has support for ignoring lines with comments. By default the string to start a
-comment it '"' just like Vim, but this can be configured g:crunch_calc_comment
-global variable. 
+![Variables](http://i.imgur.com/fZw0B4S.gif)
 
-**Note**: The comment must be the first character in a line for the comment to
-work.
+Variables can be used to save expressions so they can be used later.
 
+---
 
-##Syntax Loosening
+![Visual Selection](http://i.imgur.com/U4pkM6d.gif) 
 
-The following chart summarizes the features that make using math with Crunch a
-better experience than vanilla Vim when just considering syntax. 
+Multiple lines can be evaluated/reevaluated , with visual selections.
+Optionally single lines can be evaluated/reevaluated.
 
-|       **Feature**         |    **With Crunch**    |   **Without Crunch**   |
-| ------------------------- | --------------------- | ---------------------- |
-| Multiplication Fix        |                       |                        |
-|                           |`cos(0)cos(0) = 1`     |`cos(0)*cos(0) = 1.0`   |
-|                           |`2sin(1) = 1.682942`   |`2*sin(1) = 1.682942`   |
-|                           |`sin(1)2 = 1.682942`   |`sin(1)*2 = 1.682942`   |
-|                           |`(2*3)(3*2) = 36`      |`(2*3)*(3*2) = 36`      |
-|                           |`2(3*2) = 12`          |`2*(3*2) = 12`          |
-|                           |`.25*4 = 1`            |`0.25*4 = 1.0`          |
-|                           |                       |                        |
-|Integer to Float Conversion|                       |                        |
-|                           |`1/2 = 0.5`            |`1.0/2.0 = 0.5`         |
-|                           |`.25*4 = 1`            |`0.25*4 = 1.0`          |
-|                           |                       |                        |
-|Decimals w/o Leading Zeros |                       |                        |
-|                           |`.5/2 = 0.25`          |`0.5/2 = 0.25`          |
-|                           |`.25*4 = 1`            |`0.25*4 = 1.0`          |
-|                           |                       |                        |
-|Removed Zeros In Result    |                       |                        |
-|                           |`.25*4 = 1`            |`0.25*4 = 1.0`          |
-|                           |`pow(2,8) = 256`       |`pow(2,8)= 256.0`       |
-**Note**: all the examples 'Without Crunch' work fine with Crunch as well.
+---
 
+![Ignores Comments](http://i.imgur.com/yu2xGWk.gif)
+
+Crunch ignores Comments, by removing them evaluating lines then putting them
+back in. The ignored comments are variable based file type using the
+`conmmentstring` variable. Crunch also always ignores a leading or following
+`//` and `*` 
+
+---
+
+![CrunchBlock](http://i.imgur.com/i3IDNIR.gif) 
+
+Paragraphs can be evaluated using the `:CrunchBlock` command or the default
+mapping `<leader>cb`
+
+##Looser Syntax
+
+The following chart shows the looser math syntax provided with Crunch, compared 
+to the default math syntax.
+
+|       **Feature**         |    **With Crunch**      |  **Without Crunch** |
+| ------------------------- | ---------------------   | ------------------- |
+|Implied Multiplication     |                         |                     |
+|                           |`cos(0)cos(0) = 1`       |`cos(0)*cos(0) = 1.0`|
+|                           |`2sin(1) = 11.682942`    |`2*sin(1) = 1.682942`|
+|                           |`sin(1)2 = 1.682942`     |`sin(1)*2 = 1.682942`|
+|                           |`(2*3)(3*2) = 36`        |`(2*3)*(3*2) = 36`   |
+|                           |`2(3*2) = 12`            |`2*(3*2) = 12`       |
+|Integer to Float Conversion|                         |                     |
+|                           |`1/2 = 0.5`              |`1.0/2.0 = 0.5`      |
+|                           |`.25*4 = 1`              |`0.25*4 = 1.0`       |
+|Decimals w/o Leading Zeros |                         |                     |
+|                           |`.5/2 = 0.25`            |`0.5/2 = 0.25`       |
+|                           |`.25*4 = 1`              |`0.25*4 = 1.0`       |
+|Removed Zeros In Result    |                         |                     |
+|                           |`0.25*4 = 1`             |`0.25*4 = 1.0`       |
+|                           |`pow(2,8) = 256`         |`pow(2,8)= 256.0`    |
+                                                                             
 ##Installation
-Use your favorite plugin manager.
-* [Neobundle](https://github.com/Shougo/neobundle.vim) <-- I use this one
+If you don't have an preferred method, I recommend one of the following plugin
+managers.
+* [Neobundle](https://github.com/Shougo/neobundle.vim)
 * [Vundle](https://github.com/gmarik/vundle)
 * [pathogen](https://github.com/tpope/vim-pathogen)
 * [VAM](https://github.com/MarcWeber/vim-addon-manager)
 
-
-------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
 ### Make Crunch Better
